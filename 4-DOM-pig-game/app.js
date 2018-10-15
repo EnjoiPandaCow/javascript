@@ -8,7 +8,7 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 */
-var scores, roundScore, activePlayer, gameState;
+var scores, roundScore, activePlayer, gameState, lastDice;
 
 init();
 
@@ -16,9 +16,9 @@ init();
    Allows us to select and add an Event Listener to a particular DOM element.
    Also passing an anonymous function as the second argument to the Event Listener.
 */
-document.querySelector('.btn-roll').addEventListener('click', function() {
+document.querySelector('.btn-roll').addEventListener('click', function () {
     // All of this only happens if the gameState is equal to true.
-    if(gameState) {
+    if (gameState) {
         // 1. Random Number.
         var dice = Math.floor(Math.random() * 6) + 1;
 
@@ -28,18 +28,25 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         diceDOM.src = 'dice-' + dice + '.png'; // Picking the img that will be displayed when the dice rolls.
 
         // 3. Update the round score IF the rolled number is NOT a 1.
-        if (dice !== 1) {
+        if (dice === 6 && lastDice === 6) {
+            scores[activePlayer] = 0;
+            document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+            nextPlayer();
+        } else if (dice !== 1) {
             // Add score.
             roundScore += dice;
             document.querySelector('#current-' + activePlayer).textContent = roundScore;
+            last = dice;
+            console.log(last);
         } else {
             // Next player.
             nextPlayer();
         }
+        lastDice = dice
     }
 });
 
-document.querySelector('.btn-hold').addEventListener('click', function() {
+document.querySelector('.btn-hold').addEventListener('click', function () {
     if (gameState) {
         // 1. Add current score to global score.
         scores[activePlayer] += roundScore;
