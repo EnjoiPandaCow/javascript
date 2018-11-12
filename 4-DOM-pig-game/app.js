@@ -46,6 +46,8 @@ document.querySelector('.btn-roll').addEventListener('click', function () {
     }
 });
 
+console.log(lastDice);
+
 document.querySelector('.btn-hold').addEventListener('click', function () {
     if (gameState) {
         // 1. Add current score to global score.
